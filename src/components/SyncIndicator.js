@@ -10,6 +10,7 @@ export default function SyncIndicator({ status, onRetry }) {
   const map = {
     syncing: { icon: "cloud-upload-outline", color: C.TEXT_MUTED, label: "Saving…" },
     saved: { icon: "checkmark-circle-outline", color: C.SUCCESS, label: "Saved" },
+    offline: { icon: "cloud-offline-outline", color: C.WARNING, label: "Offline — saved locally" },
     error: { icon: "alert-circle-outline", color: C.DANGER, label: "Save failed" },
   };
 

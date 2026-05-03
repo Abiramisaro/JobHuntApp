@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: C.BORDER,
     paddingHorizontal: SPACING.md,
-    height: 50
+    height: 50,
   },
   inputWrapFocused: {
     borderColor: C.PRIMARY,

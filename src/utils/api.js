@@ -10,7 +10,24 @@
  * Replace BASE_URL with your real API to go live.
  */
 
+import NetInfo from "@react-native-community/netinfo";
+
 const BASE_URL = "https://jsonplaceholder.typicode.com";
+
+/**
+ * Throws a descriptive error if the device has no internet.
+ * Called before every outbound request so we fail fast with
+ * a clear message instead of a generic network timeout.
+ */
+async function assertOnline() {
+  const state = await NetInfo.fetch();
+  const offline =
+    state.isConnected === false ||
+    (state.isInternetReachable === false && state.isConnected === true);
+  if (offline) {
+    throw new Error("NO_INTERNET");
+  }
+}
 
 // Exponential backoff retry wrapper
 async function fetchWithRetry(url, options, retries = 3) {
@@ -18,7 +35,6 @@ async function fetchWithRetry(url, options, retries = 3) {
     try {
       const res = await fetch(url, options);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      
       return res;
     } catch (err) {
       if (attempt === retries) throw err;
@@ -34,6 +50,7 @@ export const ApiService = {
    * Saves the user's current step + answers to the backend.
    */
   async saveProgress(currentStepId, answers) {
+    await assertOnline(); // ← bail early if offline
     const payload = {
       currentStepId,
       answers,
@@ -57,6 +74,7 @@ export const ApiService = {
    */
   async loadProgress() {
     try {
+      await assertOnline(); // ← bail early if offline
       const res = await fetchWithRetry(`${BASE_URL}/posts/1`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

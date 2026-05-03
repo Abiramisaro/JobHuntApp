@@ -52,11 +52,10 @@ export default function PrimaryButton({
 const styles = StyleSheet.create({
   base: {
     height: 52,
-    marginBottom: 18,
     borderRadius: RADIUS.full,
     alignItems: "center",
     justifyContent: "center",
-    flex: 1
+    flex: 1,
   },
   filled: {
     backgroundColor: C.PRIMARY,

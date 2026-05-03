@@ -61,8 +61,9 @@ export function FlowProvider({ children }) {
         await ApiService.saveProgress(stepId, currentAnswers);
         setSyncStatus("saved");
         setTimeout(() => setSyncStatus("idle"), 2000);
-      } catch {
-        setSyncStatus("error");
+      } catch (err) {
+        // Distinguish offline vs other API error for the UI
+        setSyncStatus(err?.message === "NO_INTERNET" ? "offline" : "error");
       }
     }, 700);
   }, []);
